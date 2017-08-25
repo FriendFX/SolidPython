@@ -7,7 +7,8 @@ code from Python code with minimal overhead.  Here's a simple example:
     
 This Python code: 
 
-```from pyopenscad import *
+```
+from pyopenscad import *
 d = difference()(
     cube(10),
     sphere(15)
@@ -17,7 +18,8 @@ print scad_render( d)
 
 Generates this OpenSCAD code:
 
-```difference(){
+```
+difference(){
 	cube(10);
 	sphere(15);
 }
@@ -25,27 +27,29 @@ Generates this OpenSCAD code:
 
 Steps to using PyOpenSCAD
 -------------------------
-*   ```from pyopenscad import *```
-*   call ```use( "/path/to/scadfile.scad")``` or ```include("/path/to/scadfile.scad")```
+ *  `from pyopenscad import *`
+ *  call `use( "/path/to/scadfile.scad")` or `include("/path/to/scadfile.scad")`
     for any included SCAD code
-*   OpenSCAD uses curly-brace blocks ({}) to create its tree.  PyOpenSCAD uses
+ *  OpenSCAD uses curly-brace blocks (`{}`) to create its tree.  PyOpenSCAD uses
     parentheses with comma-delimited lists.
     *   OpenSCAD:
-```difference(){
-    cube(10);
-    sphere(15);
-}
-```
+    ```
+    difference(){
+        cube(10);
+        sphere(15);
+    }
+    ```
     *   PyOpenSCAD:
-```d = difference()(
-    cube(10),  # Note the comma between each element!
-    sphere(15)
-)
-```
+    ```
+    d = difference()(
+        cube(10),  # Note the comma between each element!
+        sphere(15)
+    )
+    ```
            
-*   Call ```scad_render( py_scad_obj)``` to generate SCAD code. This returns a string 
+*   Call `scad_render( py_scad_obj)` to generate SCAD code. This returns a string 
     of valid OpenSCAD code.
-*   *or*: call ```scad_render_to_file( py_scad_obj, filepath)``` to
+*   *or*: call `scad_render_to_file( py_scad_obj, filepath)` to
     store that code in a file. 
     *   If 'filepath' is open in the OpenSCAD IDE and Design =>
         'Automatic Reload and Compile' is checked, calling
@@ -60,19 +64,24 @@ Extra syntactic sugar
 Following Elmo Mäntynen's suggestion, SCAD objects override 
 the basic operators + (union), - (difference), and * (intersection).
 So
-```c = cylinder( r=10, h=5) + cylinder( r=2, h=30)```
-is the same as:
-```c = union()(
+
+`c = cylinder( r=10, h=5) + cylinder( r=2, h=30)`
+
+in PyOpenSCAD is the same as the following in SCAD:
+```
+c = union()(
     cylinder( r=10, h=5),
     cylinder( r=2, h=30)
 )
 ```
 Likewise:
-```c = cylinder( r=10, h=5)
+```
+c = cylinder( r=10, h=5)
 c -= cylinder( r=2, h=30)
 ```
 is the same as:
-```c = difference()(
+```
+c = difference()(
     cylinder( r=10, h=5),
     cylinder( r=2, h=30)
 )
@@ -87,12 +96,14 @@ ashamed that I can't find the original source.  I owe someone some
 attribution.
     
 ### Directions: (up, down, left, right, forward, back) for arranging things:
-```up(10)(
+```
+up(10)(
     cylinder()
 )
 ```
 seems a lot clearer to me than:
-```transform( [0,0,10])(
+```
+transform( [0,0,10])(
     cylinder()
 )
 ```
@@ -102,24 +113,24 @@ original author.  My apologies.
     
 ### Arcs
 I've found this useful for fillets and rounds.
-```arc( rad=10, 90, 210)``` draws an arc of radius 10 counterclockwise from 90 to 210 degrees. 
-```arc( rad=10, 0, 90, invert=True )``` draws the portion of a 10x10 square NOT in a 90 degree circle of radius 10.
+`arc( rad=10, 90, 210)` draws an arc of radius 10 counterclockwise from 90 to 210 degrees. 
+`arc( rad=10, 0, 90, invert=True )` draws the portion of a 10x10 square NOT in a 90 degree circle of radius 10.
 This is the shape you need to add to make fillets or remove to make rounds.
     
     
 ### Bill Of Materials
-Put ```@part()``` before any method that defines a part, then 
-call ```bill_of_materials()``` after the program is run, and all parts will be 
+Put `@part()` before any method that defines a part, then 
+call `bill_of_materials()` after the program is run, and all parts will be 
 counted, priced and reported. Check it out.
     
 Advantages
 ----------
 Because you're using Python, a lot of things are easy that would be hard or 
 impossible in pure OpenSCAD.  Among these are:
-* recursion
-* built-in dictionary types
-* mutable, slice-able list and string types
-* external libraries (images! 3D geometry!  web-scraping! ...)
+ * recursion
+ * built-in dictionary types
+ * mutable, slice-able list and string types
+ * external libraries (images! 3D geometry!  web-scraping! ...)
 
 Enjoy, and please send any questions or bug reports to me at evan_t_jones@mac.com. Cheers!
 Evan
